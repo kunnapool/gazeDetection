@@ -6,7 +6,7 @@ import random
 from vid_cam import FrontCam
 
 # https://stackoverflow.com/questions/44650888/resize-an-image-without-distortion-opencv
-def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA):
+def image_resize_same_aspect_ratio(image, width = None, height = None, inter = cv2.INTER_AREA):
     # initialize the dimensions of the image to be resized and
     # grab the image size
     dim = None
@@ -57,11 +57,9 @@ while True:
     num_frame += 1
 
     if frame is not None:
-        # don't detect on all frames
+
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        gray = image_resize(gray, height=128)
-        
-        # only detect for every 3rd frame
+        gray = image_resize_same_aspect_ratio(gray, height=128)
         
         faces = detector(gray, 0)
 
@@ -72,7 +70,7 @@ while True:
             cv2.rectangle(gray, (x, y), (x1, y1), (0, 255, 0), 2)
 
         # scaled_size = int(gray.shape[0]/scale_factor), int(gray.shape[1]/scale_factor)
-        # gray = image_resize(gray, height=1000)
+        # gray = image_resize_same_aspect_ratio(gray, height=1000)
 
         cv2.imshow("Frame", gray)
 
